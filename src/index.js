@@ -17,24 +17,65 @@ console.log("Deepar version: " + deepar.version);
   // All the effects are in the public/effects folder.
   // Here we define the order of effect files.
   const effectList = [
-    "effects/ray-ban-wayfarer.deepar",
-    "effects/viking_helmet.deepar",
-    "effects/MakeupLook.deepar",
-    "effects/Split_View_Look.deepar",
-    "effects/flower_face.deepar",
-    "effects/Stallone.deepar",
-    "effects/galaxy_background_web.deepar",
-    "effects/Humanoid.deepar",
-    "effects/Neon_Devil_Horns.deepar",
-    "effects/Ping_Pong.deepar",
-    "effects/Pixel_Hearts.deepar",
-    "effects/Snail.deepar",
-    "effects/Hope.deepar",
-    "effects/Vendetta_Mask.deepar",
-    "effects/Fire_Effect.deepar",
+    // Only keep the requested effects
+    "effects/Bloobloom-BB-172-optimist-in-honey-honey-Clear-v2.deepar", // BB-172+-honey-honey
+    "effects/RB218060171.deepar",
+    "effects/RB36899064S2.deepar",
+    "effects/Prada Linea Rossa-PS 54YS 1BO06U 74-03-v2-Compressed.deepar", // BO06U
   ];
 
   let deepAR = null;
+  // Map known effects to their thumbnail images; others will use a text label
+  const effectThumbMap = {
+    "ray-ban-wayfarer": "ray-ban-wayfarer.png",
+    "viking_helmet": "viking.png",
+    "MakeupLook": "makeup.png",
+    "Split_View_Look": "makeup-split.png",
+    "flower_face": "flower_face.png",
+    "Stallone": "stallone.png",
+    "galaxy_background_web": "galaxy.png",
+    "Humanoid": "humanoid.png",
+    "Neon_Devil_Horns": "devil_horns.png",
+    "Ping_Pong": "ping_pong.png",
+    "Pixel_Hearts": "pixel_hearts.png",
+    "Snail": "snail.png",
+    "Hope": "hope.png",
+    "Vendetta_Mask": "vendetta.png",
+    "Fire_Effect": "fire.png",
+  };
+
+  // Build carousel slides dynamically to match effectList
+  const sliderElem = document.querySelector("#carousel .carousel-slider");
+  if (sliderElem) {
+    sliderElem.innerHTML = "";
+    effectList.forEach((effectPath) => {
+      const base = effectPath.replace(/^effects\//, "").replace(/\.deepar$/, "");
+      const thumb = effectThumbMap[base];
+      const slide = document.createElement("div");
+      slide.className = "slide";
+      if (thumb) {
+        const img = document.createElement("img");
+        img.className = "responsive-img";
+        img.src = `thumbs/${thumb}`;
+        img.alt = base;
+        slide.appendChild(img);
+      } else {
+        const label = document.createElement("div");
+        label.style.display = "flex";
+        label.style.alignItems = "center";
+        label.style.justifyContent = "center";
+        label.style.height = "100%";
+        label.style.padding = "10px";
+        label.style.textAlign = "center";
+        label.style.color = "#fff";
+        label.style.background = "rgba(0,0,0,0.2)";
+        label.style.borderRadius = "12px";
+        label.textContent = base;
+        slide.appendChild(label);
+      }
+      sliderElem.appendChild(slide);
+    });
+  }
   const licenseKey = window.DEEPAR_LICENSE_KEY;
 
   // Initialize DeepAR with an effect file.
